@@ -11,7 +11,7 @@ BOT_ID = os.environ.get("BOT_ID")
 # constants
 AT_BOT = "<@" + BOT_ID + ">"
 EXAMPLE_COMMAND = "do"
-HEY_ARRAY = ['HEY','Hi','Yo!']
+HEY_ARRAY = ['YPo','Yo','Y!o!']
 
 # instantiate Slack & Twilio clients
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
