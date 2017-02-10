@@ -1,5 +1,7 @@
 import os
 import time
+import random
+
 from slackclient import SlackClient
 
 
@@ -9,15 +11,14 @@ BOT_ID = os.environ.get("BOT_ID")
 # constants
 AT_BOT = "<@" + BOT_ID + ">"
 EXAMPLE_COMMAND = "do"
+HEY_ARRAY = ['HEY','Hi','Yo!']
 
 # instantiate Slack & Twilio clients
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
 
 def handle_command(command, channel):
-
-    response = "Not sure what you mean. Use the *" + EXAMPLE_COMMAND + \
-               "* command with numbers, delimited by spaces."
+    response = random.choice(HEY_ARRAY)
     if command.startswith(EXAMPLE_COMMAND):
         response = "Sure...write some more code then I can do that!"
     slack_client.api_call("chat.postMessage", channel=channel,
@@ -25,6 +26,7 @@ def handle_command(command, channel):
 
 
 def parse_slack_output(slack_rtm_output):
+    print(slack_rtm_output)
 
     output_list = slack_rtm_output
     if output_list and len(output_list) > 0:
