@@ -14,21 +14,21 @@ AT_BOT = "<@" + BOT_ID + ">"
 EXAMPLE_COMMAND = "do"
 
 GREETING_KEYWORDS = ("hello", "hi", "greetings", "sup", "what's up",)
-GREETING_RESPONSES = ["'sup bro", "hey", "*nods*", "hey you get my snap?"]
+GREETING_RESPONSES = ["'sup bro", "hey", ":wave:", "hey you get my snap?"]
 
 # instantiate Slack & Twilio clients
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
 
 def handle_command(command, channel):
-
+    response = ""
     print(command)
     if command.startswith(GREETING_KEYWORDS):
+
         response = random.choice(GREETING_RESPONSES)
     if command.startswith(EXAMPLE_COMMAND):
         response = "Sure...write some more code then I can do that!"
-    slack_client.api_call("chat.postMessage", channel=channel,
-                           text=response, as_user=True)
+    slack_client.api_call("chat.postMessage", channel=channel, text=response, as_user=True)
 
 
 def parse_slack_output(slack_rtm_output):
