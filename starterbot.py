@@ -4,25 +4,31 @@ import random
 
 from slackclient import SlackClient
 
-
 # starterbot's ID as an environment variable
 BOT_ID = os.environ.get("BOT_ID")
+
+JACK = 'D43CGAYSU'
 
 # constants
 AT_BOT = "<@" + BOT_ID + ">"
 EXAMPLE_COMMAND = "do"
-HEY_ARRAY = ['YPo','Yo','Y!o!']
+
+GREETING_KEYWORDS = ("hello", "hi", "greetings", "sup", "what's up",)
+GREETING_RESPONSES = ["'sup bro", "hey", "*nods*", "hey you get my snap?"]
 
 # instantiate Slack & Twilio clients
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
 
 def handle_command(command, channel):
-    response = random.choice(HEY_ARRAY)
+
+    print(command)
+    if command.startswith(GREETING_KEYWORDS):
+        response = random.choice(GREETING_RESPONSES)
     if command.startswith(EXAMPLE_COMMAND):
         response = "Sure...write some more code then I can do that!"
     slack_client.api_call("chat.postMessage", channel=channel,
-                          text=response, as_user=True)
+                           text=response, as_user=True)
 
 
 def parse_slack_output(slack_rtm_output):
@@ -31,7 +37,7 @@ def parse_slack_output(slack_rtm_output):
     output_list = slack_rtm_output
     if output_list and len(output_list) > 0:
         for output in output_list:
-            if output and 'text' in output and AT_BOT in output['text']:
+            while output and 'text' in output and AT_BOT in output['text']:
                 # return text after the @ mention, whitespace removed
                 return output['text'].split(AT_BOT)[1].strip().lower(), \
                        output['channel']
